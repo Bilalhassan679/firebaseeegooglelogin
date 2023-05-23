@@ -1,0 +1,113 @@
+Google PACKAGE
+https://www.npmjs.com/package/@react-native-google-signin/google-signin
+
+DOCUMENTATION FIREBASE
+https://rnfirebase.io/auth/usage
+
+
+FOR NOTIFICATION GENERATE 
+https://testfcm.com/
+Link For Notification That i followedQ
+https://www.youtube.com/watch?v=SP31GFwSwYg
+
+
+
+FOR NOTICATOIN THIS COMMAND NEEED
+yarn add @react-native-firebase/app
+
+yarn add @react-native-firebase/messaging
+
+NEED SERVER KEY FIND IT FIREBASE..
+
+GET TOKEN 
+ useEffect(() => {
+    getToken();
+  }, []);
+  const getToken = async () => {
+    const token = await messaging().getToken();
+    console.log('token', token);
+  };
+
+ GET DATA FOREGROUND NOTIFICATOIN
+    useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    });
+
+    return unsubscribe;
+  }, []);
+
+   GET DATA BACKGROUND NOTIFICATOIN ADD IT Index.js
+   // Register background handler
+messaging().setBackgroundMessageHandler(async remoteMessage => {
+  console.log('Message handled in the background!', remoteMessage);
+});
+
+GET DATA TERMINATE STATE NOTIFICATOIN ADD IT Index.js
+messaging().getInitialNotification(async remoteMessage => {
+  console.log('Message handled in the background!', remoteMessage);
+});
+
+
+FOR GOOGLE LOGIN IN ANDROID
+# Install the authentication module (use npm not yarn)
+npm i @react-native-firebase/auth
+
+npm i @react-native-google-signin/google-signin
+
+
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+
+ //for GOOGLe LOGIN
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId:
+        'find it google-services.json',
+    });
+  }, []);
+
+  example
+  "oauth_client": [
+        {
+          "client_id": "37643514154-kkvisj4aorbcmj8nj2if0b9ecrdmrhgq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.firebaseeegooglelogin",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+ THIS ONE ==>    "client_id": "...",
+          "client_type": 3
+        }
+      ],
+
+
+       const signIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const usrInfo = await GoogleSignin.signIn();
+      setUserInfo(usrInfo);
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (e.g. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+      } else {
+        // some other error happened
+      }
+    }
+  };
+  console.log('userInfo', userInfo);
+
+  const signOut = async () => {
+    try {
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+      setUserInfo(null); // Remember to remove the user from your app's state as well
+    } catch (error) {
+      console.error(error);
+    }
+  };
